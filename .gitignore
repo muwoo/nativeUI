@@ -21,7 +21,6 @@ logs
 *.log
 bin
 
-
 # idea #
 .idea
 *.iml
