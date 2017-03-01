@@ -6,6 +6,18 @@
 </head>
 <body>
   <button class="nv-button nv-default">native Button</button>
+  <div id="carousel" style="width: 500px; height: 300px;"></div>
 </body>
 <script src="./dist/nativeUI.js"></script>
+<script>
+  var imgArray = [
+    'https://img.alicdn.com/simba/img/TB1DtYSPFXXXXcWXXXXSutbFXXX.jpg',
+    'https://img.alicdn.com/simba/img/TB12F_9PpXXXXcvXpXXSutbFXXX.jpg',
+    'http://img1.imgtn.bdimg.com/it/u=3081053742,1983158129&fm=23&gp=0.jpg'
+  ];
+  var carouselDom = document.getElementById('carousel');
+  var loopImages = new LoopImages(imgArray, carouselDom);
+  loopImages.createImages();
+  loopImages.autoPlay();
+</script>
 </html>
