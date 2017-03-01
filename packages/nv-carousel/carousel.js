@@ -74,7 +74,7 @@ export class LoopImages {
 
   startMover(itarget) {//目标值
     this.timer = setInterval(() => {
-      var speed = 0;
+      let speed = 0;
       if(this.divDom.offsetLeft > itarget){
         speed = -1;
       }
