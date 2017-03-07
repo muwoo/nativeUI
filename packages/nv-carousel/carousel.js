@@ -1,12 +1,9 @@
 /**
  * @author monkeyWang
- */
-
-/**
  * 图片轮播类
- * @param imgArr
- * @param container
- * @param opt
+ * @param imgArr //轮播图片集合
+ * @param container //轮播容器 DOM
+ * @param opt //轮播参数
  *
  */
 export class LoopImages {
@@ -81,7 +78,6 @@ export class LoopImages {
    * 创建切换按钮
    */
   createSlideButton() {
-    let index = 0;
     let leftSpan = document.createElement('span');  //创建左边按钮
     let rightSpan = document.createElement('span'); //创建右边按钮
     let spanStyle = {                               //设置按钮样式
@@ -104,8 +100,7 @@ export class LoopImages {
         if (this.timer) {   //如果正处于自动轮播状态 则返回
           return;
         }
-        index++;
-        this.changeImages('right', index); //开始播放图片
+        this.changeImages('right'); //开始播放图片
 
       });
       leftSpan.addEventListener('click', (e) => {      //按钮点击事件
@@ -113,8 +108,7 @@ export class LoopImages {
         if (this.timer) {
           return;
         }
-        index--;
-        this.changeImages('left', index)
+        this.changeImages('left')
       });
       this.container.appendChild(leftSpan);
       this.container.appendChild(rightSpan);
