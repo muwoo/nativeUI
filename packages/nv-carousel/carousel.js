@@ -13,7 +13,8 @@ export class LoopImages {
   constructor(imgArr = [], container = '', opt = {
     checkBtnSize: 20,//轮播切换按钮大小
     speed: 10, //轮播速度
-    autoPlayTime: 3000 //播放时间间隔
+    autoPlayTime: 3000, //播放时间间隔
+    animationStyle: '0.4s cubic-bezier(0,.95,.36,.99)' //平移样式
   }) {
     this.imagesArray = imgArr;
     this.container = container;
@@ -22,9 +23,12 @@ export class LoopImages {
     this.opt = opt;
   }
 
-  //创建轮播图片
+  /**
+   * 创建轮播图片
+   */
   createImages() {
     let containerDOM = this.container;
+    let containerW = parseInt(containerDOM.style.width); // 容器宽度
     if(this.imagesArray instanceof Array) {
       if (typeof containerDOM === 'object') { //容器类型检测 需要是一个doom对象
         let ulDom = document.createElement('ul'); //创建ul容器
@@ -42,8 +46,8 @@ export class LoopImages {
           position: 'relative',
           overflow: 'hidden'
         });
-
         //遍历图片数组 设置li的背景图片
+        let i = this.imagesArray.length-1;
         for (let src of this.imagesArray) {
           let li = document.createElement('li');
           setStyle(li, {
@@ -52,10 +56,14 @@ export class LoopImages {
             background: `url(${src}) no-repeat`,
             backgroundSize: '100% 100%',
             listStyle: 'none',
-            float: 'left'
+            position:'absolute',
+            top: 0,
+            left: 0,
+            transform: `translateX(${containerW*(1-i)}px)`
           });
-          ulDom.style.width = parseInt(containerDOM.style.width) + parseInt(ulDom.style.width) + 'px';
+          ulDom.style.width = containerW + parseInt(ulDom.style.width) + 'px';
           ulDom.appendChild(li);
+          i--;
         }
         this.ulDom = ulDom;
       }
@@ -69,8 +77,11 @@ export class LoopImages {
 
   }
 
-  //创建切换按钮
+  /**
+   * 创建切换按钮
+   */
   createSlideButton() {
+    let index = 0;
     let leftSpan = document.createElement('span');  //创建左边按钮
     let rightSpan = document.createElement('span'); //创建右边按钮
     let spanStyle = {                               //设置按钮样式
@@ -93,45 +104,40 @@ export class LoopImages {
         if (this.timer) {   //如果正处于自动轮播状态 则返回
           return;
         }
-        this.changeImages(); //开始播放图片
+        index++;
+        this.changeImages('right', index); //开始播放图片
+
       });
       leftSpan.addEventListener('click', (e) => {      //按钮点击事件
         e.preventDefault();
         if (this.timer) {
           return;
         }
-        this.changeImages('left')
+        index--;
+        this.changeImages('left', index)
       });
       this.container.appendChild(leftSpan);
       this.container.appendChild(rightSpan);
     }
   }
 
-  //切换下一张图片
+  /**
+   * 开始轮播函数
+   * @param direction // 轮播方向
+   */
   changeImages(direction) {
     let lis = this.ulDom.childNodes;  //轮播图的子元素
-    let ulStyle = this.ulDom.style;   // 轮播图容器ul的样式类
     let containerStyle = this.container.style; //轮播图主容器样式类
     if (direction === 'left') {       //判断图片轮播的方向 默认像右侧播放
-      if (Math.abs(parseInt(ulStyle.left)) === 0) {   //轮播图片到达左侧首部；则进行图片顺序调换
-        let child = lis[lis.length - 1];
-        this.ulDom.removeChild(child);
-        this.ulDom.insertBefore(child, lis[0]);
-        ulStyle.left = parseInt(ulStyle.left) - parseInt(containerStyle.width) + 'px';
-      }
-      this.startMover(parseInt(ulStyle.left) + parseInt(containerStyle.width));
-      return;
+      translation(lis, parseInt(containerStyle.width)*(lis.length - 2), -parseInt(containerStyle.width), this.opt.animationStyle);
+      return
     }
-    if (Math.abs(parseInt(ulStyle.left)) === parseInt(ulStyle.width) - parseInt(containerStyle.width)) { //轮播图片向右侧播放时
-      let child = lis[0];
-      this.ulDom.removeChild(child);
-      this.ulDom.appendChild(child);
-      ulStyle.left = parseInt(ulStyle.left) + parseInt(containerStyle.width) + 'px';
-    }
-    this.startMover(parseInt(ulStyle.left) - parseInt(containerStyle.width));
+    translation(lis, -parseInt(containerStyle.width)*(lis.length - 2), parseInt(containerStyle.width), this.opt.animationStyle);
   }
 
-  // 自动播放
+  /**
+   * 自动播放
+   */
   autoPlay() {
     //设置定时器 自动播放图片
     setInterval(() => {
@@ -142,32 +148,34 @@ export class LoopImages {
     }, this.opt.autoPlayTime);
   }
 
-  /*
-  * function 平移动画
-  * speed 移动速度（单位：像素）
-  * @params itarget 平移动画的目标值
-  */
-
-  startMover(itarget) {
-    this.timer = setInterval(() => {
-      let speed = 0;
-      if (this.ulDom.offsetLeft > itarget) {
-        speed = -this.opt.speed;
+}
+/**
+ * 创建平移效果
+ * @param domArray //容器内所有li集合
+ * @param Offset // 平移偏移量
+ * @param containerW // 容器的宽度
+ * @param animation //过渡样式
+ */
+function translation(domArray, Offset, containerW, animation) {
+  for(let i=0; i<domArray.length; i++){
+    let translate = parseInt(domArray[i].style.transform.match(/translateX\((.*)\)/)[1]); //当前li偏移量
+    if(translate === Offset){ //如果当前li偏移量等于平移偏移量 把当前li调换到下一个将要播放的位置
+      domArray[i].style.transition = ''; //取消动画样式
+      domArray[i].style.transform = `translateX(${containerW}px)`;
+    }
+    else{ //其余的继续进行偏移动画
+      if(translate - containerW ==0 || translate==0){
+        domArray[i].style.transition = animation;
       }
-      else {
-        speed = this.opt.speed;
-      }
-      if (this.ulDom.offsetLeft == itarget) {
-        clearInterval(this.timer);
-        this.timer = null;
-      }
-      else {
-        this.ulDom.style.left = this.ulDom.offsetLeft + speed + 'px';
-      }
-    }, 3)
+      domArray[i].style.transform = `translateX(${translate - containerW}px)`;
+    }
   }
 }
-//设置dom节点样式属性
+/**
+ * 设置dom节点样式
+ * @param element //dom标签
+ * @param styleObj //样式类
+ */
 function setStyle(element, styleObj) {
   for (let key in styleObj) {
     element.style[key] = styleObj[key];
