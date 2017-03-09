@@ -9,6 +9,7 @@
 
 
 ####轮播
+![image](https://github.com/monkeyWangs/nativeUI/blob/master/images/carousel.gif)
 ```html
  <div id="carousel" style="width: 500px; height: 300px;"></div>
  ```
