@@ -1,0 +1,76 @@
+/*
+ * @author silence-j
+ * @Date 2017-3-7
+ *
+ */
+@import "../style/color.less";
+
+.nv-dialog{
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: -2017;
+  transition:opacity 0.35s linear;
+
+  .nv-dialog__container{
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    text-align: left;
+    display: inline-block;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition:top 0.35s linear;
+    background-color: #fff;
+    width: 420px;
+    border-radius: 5px;
+    font-size: 16px;
+    overflow: hidden;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    .nv-dialog-header{
+      border-bottom: 1px solid #ddd;
+      .nv-dialog-title{
+        padding-left: 10px;
+      }
+      .nv-dialog-close{
+        float: right;
+        border: 0;
+        background: none;
+        font-size: 21px;
+        color: #bbb;
+        margin-top: -45px;
+        margin-right: 10px;
+      }
+    }
+    .nv-dialog-body{
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .nv-dialog-footer{
+      float: right;
+      padding: 20px;
+    }
+  }
+}
+.nv-dialog:after{
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 0;
+  vertical-align: middle;
+}
+.nv-modal{
+  transition:opacity 0.35s linear;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background: #000;
+}
