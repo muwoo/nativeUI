@@ -1,6 +1,13 @@
+/*
+ * @author silence-j
+ * @Date 2017-2-28
+ *
+ */
+
 @import "../style/color.less";
 
-.nv-button.nv-default {
+//公共组件button样式
+.nv-button{
   display: inline-block;
   line-height: 1;
   white-space: nowrap;
@@ -19,5 +26,85 @@
   padding: 10px 15px;
   font-size: 14px;
   border-radius: 4px;
+
+}
+
+//无背景色默认样式
+.nv-default .nv-success .nv-danger .nv-warning {
+  background: @white;
+  border: 1px solid @silverOO;
+  color: @blackO;
+}
+//无背景色默认样式hover
+.nv-default:hover {
+  color:@mainColor;
+  border-color: @mainColor;
+}
+//无背景成功样式hover
+.nv-success:hover {
+  color: @success;
+  border-color: @success;
+}
+//无背景警告样式hover
+.nv-warning:hover {
+  color: @warning;
+  border-color: @warning;
+}
+//无背景危险样式hover
+.nv-danger:hover {
+  color: @danger;
+  border-color: @danger;
+}
+
+
+//有背景色 默认背景色样式
+.default-bg {
+  background-color: @mainColor;
+  color: @white;
+  border: none;
+}
+//有背景色 默认背景色样式hover
+.nv-default.default-bg:hover{
+  background-color: @mainColorO;
+  color: @white;
+}
+
+//有背景色 成功背景色样式
+.success-bg {
+  background-color: @success;
+  color: @white;
+  border: none;
+}
+//有背景色 默认背景色样式hover
+.nv-default.success-bg:hover{
+  background-color: @successO;
+  color: @white;
+  border-color: @successO;
+}
+
+//有背景色 警告背景色样式
+.warning-bg {
+  background-color: @warning;
+  color: @white;
+  border: none;
+}
+//有背景色 警告背景色样式hover
+.nv-default.warning-bg:hover{
+  background-color: @warningO;
+  color: @white;
+  border-color: @warningO;
+}
+
+//有背景色 危险背景色样式
+.danger-bg {
+  background-color: @danger;
+  color: @white;
+  border: none;
+}
+//有背景色 危险背景色样式hover
+.nv-default.danger-bg:hover{
+  background-color: @dangerO;
+  color: @white;
+  border-color: @dangerO;
 }
 

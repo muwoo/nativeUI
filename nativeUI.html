@@ -5,7 +5,46 @@
   <title>Title</title>
 </head>
 <body>
-  <button class="nv-button nv-default">native Button</button>
+  <button class="nv-button nv-default" id="showBtn">native Button</button>
+  <div id="carousel" style="width: 500px; height: 300px;"></div>
+  <div class="nv-dialog" id="nv-dialog">
+    <div class="nv-dialog__container">
+      <div class="nv-dialog-header">
+        <h4 class="nv-dialog-title">dialog标题</h4>
+        <button class="nv-dialog-close">×</button>
+      </div>
+      <div class="nv-dialog-body">
+        这是正文
+      </div>
+      <div class="nv-dialog-footer">
+        <button class="nv-dialog-close nv-button nv-default">关闭</button>
+        <button class="nv-dialog-submit nv-button nv-default default-bg">提交</button>
+      </div>
+    </div>
+  </div>
 </body>
 <script src="./dist/nativeUI.js"></script>
+<script>
+  var imgArray = [
+    'https://img.alicdn.com/simba/img/TB1DtYSPFXXXXcWXXXXSutbFXXX.jpg',
+    'https://img.alicdn.com/simba/img/TB12F_9PpXXXXcvXpXXSutbFXXX.jpg',
+    'http://img1.imgtn.bdimg.com/it/u=3081053742,1983158129&fm=23&gp=0.jpg',
+    'http://img0.imgtn.bdimg.com/it/u=4195805644,827754888&fm=23&gp=0.jpg'
+  ];
+  var container = document.getElementById('nv-dialog');
+  var dialog = new Dialog(container);
+  var showBtn = document.getElementById('showBtn');
+
+  dialog.initDialogEvent();
+  showBtn.addEventListener('click',function (e) {
+    e.stopPropagation()
+    dialog.showDialog();
+  });
+
+  var carouselDom = document.getElementById('carousel');
+  var loopImages = new LoopImages(imgArray, carouselDom);
+  loopImages.createImages();
+  loopImages.autoPlay();
+  loopImages.createSlideButton();
+</script>
 </html>
